@@ -18,7 +18,29 @@
 ---
 
 <p align="center">
-  <img src="assets/architecture.svg" alt="ChronoShield request pipeline" width="80%" />
+ ```mermaid
+flowchart TD
+    A["Client / AI Agent"] --> B["FastAPI Security Gateway"]
+    B --> C["Request Validation"]
+    C --> D["Trusted Identity Resolution"]
+    D --> E["Server-Side Resource Resolution"]
+    E --> F["Policy Engine Factory"]
+
+    F --> G{"Selected Policy Engine"}
+    G -->|DEV_MOCK| H["Development Mock Engine"]
+    G -->|REAL| I["Formal Policy Engine"]
+
+    H --> J{"Authorization Decision"}
+    I --> J
+
+    J -->|ALLOW| K["Parking Executor"]
+    J -->|DENY| L["Block Execution"]
+    J -->|APPROVAL_REQUIRED| M["Require Approval"]
+
+    K --> N["Structured API Response"]
+    L --> N
+    M --> N
+```
 </p>
 
 <p align="center"><sub>Request → resolve trusted context → evaluate policy → enforce before supported execution</sub></p>
