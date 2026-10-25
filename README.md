@@ -48,7 +48,7 @@ React + TypeScript Frontend
 ### 1. Clone the repository
 
 ```bash
-git clone <https://github.com/dilip-01-spec/ChronoShield.git>
+git clone https://github.com/dilip-01-spec/ChronoShield.git
 cd ChronoShield
 ```
 
