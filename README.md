@@ -52,8 +52,6 @@ git clone https://github.com/dilip-01-spec/ChronoShield.git
 cd ChronoShield
 ```
 
-Replace the placeholder URL with your actual repository URL.
-
 ### 2. Start the backend
 
 Create a virtual environment and install dependencies:
