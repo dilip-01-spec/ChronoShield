@@ -26,6 +26,15 @@
 
 ---
 
+<p align="center">
+  <img src="assets/architecture.svg" alt="ChronoShield request pipeline" width="48%" />
+  <img src="assets/decision-outcomes.svg" alt="ChronoShield policy outcomes" width="48%" />
+</p>
+
+<p align="center"><sub>Request → resolve trusted context → evaluate policy → enforce before supported execution</sub></p>
+
+---
+
 ## 🧭 Table of contents
 
 - [The idea](#-the-idea)
@@ -268,32 +277,38 @@ Tokens such as `token_operator_north` and `token_viewer` are for local demonstra
 
 ## 🚀 Quick start
 
-ChronoShield has a FastAPI backend and a separate React + TypeScript frontend. Start the backend first, then start the frontend.
+This repository contains both the FastAPI backend and the React + TypeScript frontend. Start the backend first, then start the frontend in a second terminal from the repository root.
 
 ### 1. Start the backend
 
-Run these commands from the backend repository root, where `app/main.py` and the project's Python dependency file are available.
+Run these commands from the repository root, where `app/main.py` and `requirements.txt` are present.
 
 **Windows PowerShell:**
 
 ```powershell
-# Activate your project's virtual environment first, if one exists.
+# Create and activate a virtual environment (recommended).
+py -m venv .venv
+.\.venv\Scripts\Activate.ps1
+
+# Install backend dependencies.
+python -m pip install --upgrade pip
+pip install -r requirements.txt
+
+# Start the mock policy engine.
 $env:CHRONOSHIELD_POLICY_ENGINE = "DEV_MOCK"
 uvicorn app.main:app --reload --port 8000
 ```
 
-To use the formal engine adapter instead:
+To use the formal engine adapter instead, stop the server and run in the same activated environment:
 
 ```powershell
 $env:CHRONOSHIELD_POLICY_ENGINE = "REAL"
 uvicorn app.main:app --reload --port 8000
 ```
 
-If dependencies are not installed, use the dependency manifest supplied by the backend repository. The exact installation command may depend on how that checkout packages its Python requirements.
-
 ### 2. Start the frontend
 
-Run these commands from the frontend project directory (the folder containing `package.json`):
+Open a second terminal at the repository root (the folder containing `package.json`):
 
 ```bash
 npm install
@@ -335,7 +350,7 @@ For a deployed frontend, set `VITE_API_BASE_URL` to the gateway URL and configur
 
 ### 4. Useful development commands
 
-Run from the frontend project directory:
+Run from the repository root (the folder containing `package.json`):
 
 ```bash
 npm run typecheck
@@ -354,48 +369,38 @@ The frontend also reads the OpenAPI schema at runtime, so its forms and endpoint
 
 ## 🗂️ Project structure
 
-The backend and frontend may be kept in separate repositories. The following is a map of the key project areas—not a claim that every path lives in the same repository.
+The backend and frontend live together in this repository. The layout below reflects the current `main` branch.
 
-### Backend
-
-```text
-app/
-├── main.py                         # FastAPI application entry point
-├── security/
-│   ├── engine.py                   # Formal engine and policy evaluation
-│   ├── policies.py                 # Policy definitions
-│   ├── schemas.py                  # Security-related schemas
-│   ├── approval.py                 # Approval-related domain logic
-│   └── workflow.py                 # Workflow-related logic
-├── services/
-│   ├── policy.py                   # Formal policy adapter
-│   ├── policy_factory.py            # Shared engine selection
-│   └── parking.py                  # Synthetic parking executor
-├── schemas/                        # API request/response schemas
-└── tests/                           # Backend test suite
-```
-
-Some paths above are based on the known implementation reports and may vary across branches. Follow the current repository layout when navigating the code.
-
-### Frontend
+### Repository layout
 
 ```text
-src/
-├── landing/                        # Product story, problem, journey, live demo
-├── console/                        # Overview, policy testing, request tester,
-│                                   # session audit viewer, approvals placeholder
-├── components/                     # Schema-driven form and verdict components
-├── lib/
-│   ├── api/                        # Gateway client, OpenAPI helpers, normalizers
-│   ├── session.tsx                 # Browser-session event store
-│   ├── health.tsx                  # Gateway health status
-│   └── useGateway.ts               # API hooks
-└── styles/                         # Base, component, landing, console styles
+ChronoShield/
+├── app/
+│   ├── main.py                     # FastAPI application entry point
+│   ├── api/                        # Gateway and policy-test routes
+│   ├── schemas/                    # API request/response models
+│   ├── security/                   # Formal engine, policies, approval/workflow logic
+│   └── services/                   # Gateway, identity, parking, policy adapter/factory
+├── src/                            # React + TypeScript application
+│   ├── landing/                    # Project story and live demo
+│   ├── console/                    # Overview, policy testing, request tester, audit, approvals
+│   ├── components/                 # Schema-driven form and verdict components
+│   └── styles/                     # Base, component, landing, and console styles
+├── tests/                          # Backend test suite
+├── public/                         # Static frontend assets
+├── assets/                         # README SVG graphics included in this package
+├── requirements.txt                # Python dependencies
+├── package.json                    # Frontend scripts and dependencies
+├── .env.example                    # Frontend environment template
+├── vite.config.ts                  # Vite and /backend proxy configuration
+└── README.md
 ```
+
+The layout above reflects the `main` branch at the time this README was reviewed; supporting files are omitted for readability.
 
 ## ✅ Testing and verification
 
-The latest recorded full-stack verification report available for this project documented the following results on its tested checkout. **Re-run these checks against the exact commit you intend to submit or deploy.**
+The repository documentation records a previous full-stack verification run with the following results. **These are historical results, not a guarantee about the current commit. Re-run these checks before submission or deployment.**
 
 | Check | Recorded result | Notes |
 |---|---|---|
