@@ -481,8 +481,8 @@ These limits are explicit by design: they make the MVP's security behavior demon
 | Member | Contribution / role |
 |---|---|
 | **Dilip S** | Team lead, as listed in the original project deck. |
-| **Manish Jindal** | Team contributor; specific role to be confirmed. |
-| **Sushanth Hegde** | Team contributor; specific role to be confirmed. |
+| **Manish Jindal** | Team contributor; Security Engine. |
+| **Sushanth Hegde** | Team contributor; Frontend. |
 | **Ashish P** | Backend and integration lead. |
 
 ## 📚 References
